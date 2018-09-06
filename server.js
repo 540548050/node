@@ -1,22 +1,28 @@
 const express = require('express');
-const ejs = require('ejs');
+const expressStatic = require('express-static');
 const fs = require('fs');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
-const serverStatic = require('express-static');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const consolidate = require('consolidate');
 const server = express();
 server.use(cookieParser());
 server.use(cookieSession({
-    name:'busyzz',
     keys:['java','javascript','php']
 }))
 server.use(bodyParser.urlencoded({extended:false}));
-
-server.use('/',(req,res,next)=>{
-    console.log(req.query)
-    res.end();
+server.use(multer({dest:'./www/upload'}).any());
+server.set('view engine','html');
+server.set('views','./views');
+server.engine('html',consolidate.ejs);
+server.use('/login',(req,res)=>{
+    res.send('okok')
 })
-server.use(serverStatic('./www'));
-server.listen(8088);
+server.use('/index',(req,res)=>{
+    res.render('index.ejs',{name:'busyzz'})
+})
+
+server.use(expressStatic('./www'))
+server.listen(8088)
 

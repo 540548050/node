@@ -11,6 +11,7 @@ server.use(cookieParser());
 server.use(cookieSession({
     keys:['java','javascript','php']
 }))
+console.log('test')
 server.use(bodyParser.urlencoded({extended:false}));
 server.use(multer({dest:'./www/upload'}).any());
 server.set('view engine','html');
